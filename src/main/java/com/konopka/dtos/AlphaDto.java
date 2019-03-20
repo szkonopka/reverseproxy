@@ -1,7 +1,16 @@
 package com.konopka.dtos;
 
-public class AlphaDto {
+import java.io.Serializable;
+
+public class AlphaDto implements Serializable {
     private int id;
     private String name;
-    private String methodType;
+    private String method;
+
+    public AlphaDto(int id, String name, String method)
+    {
+        this.id = id;
+        this.name = name;
+        this.method = method;
+    }
 }
