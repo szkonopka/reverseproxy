@@ -2,15 +2,17 @@ package com.konopka.dtos;
 
 import java.io.Serializable;
 
-public class AlphaDto implements Serializable {
-    private int id;
-    private String name;
-    private String method;
+public class AlphaDto extends MicroserviceDto {
+    private Double uniqueDouble;
 
-    public AlphaDto(int id, String name, String method)
+    public AlphaDto() { }
+
+    public AlphaDto(int id, String name, String method, Double uniqueDouble)
     {
-        this.id = id;
-        this.name = name;
-        this.method = method;
+        super(id, name, method);
+        this.uniqueDouble = uniqueDouble;
     }
+
+    public Double getUniqueDouble() { return uniqueDouble; }
+    public void setUniqueDouble(Double uniqueDouble) { this.uniqueDouble = uniqueDouble; }
 }

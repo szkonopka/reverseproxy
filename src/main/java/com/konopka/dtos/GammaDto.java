@@ -2,15 +2,17 @@ package com.konopka.dtos;
 
 import java.io.Serializable;
 
-public class GammaDto implements Serializable {
-    private int id;
-    private String name;
-    private String method;
+public class GammaDto extends MicroserviceDto {
+    private Byte uniqueChar;
+    
+    public GammaDto() { }
 
-    public GammaDto(int id, String name, String method)
+    public GammaDto(int id, String name, String method, Byte uniqueChar)
     {
-        this.id = id;
-        this.name = name;
-        this.method = method;
+        super(id, name, method);
+        this.uniqueChar = uniqueChar;
     }
+
+    public Byte getUniqueChar() { return uniqueChar; }
+    public void setUniqueChar(Byte uniqueChar) { this.uniqueChar = uniqueChar; }
 }

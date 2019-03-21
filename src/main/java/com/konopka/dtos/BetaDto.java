@@ -2,15 +2,17 @@ package com.konopka.dtos;
 
 import java.io.Serializable;
 
-public class BetaDto implements Serializable {
-    private int id;
-    private String name;
-    private String method;
+public class BetaDto extends MicroserviceDto {
+    private Boolean uniqueBool;
 
-    public BetaDto(int id, String name, String method)
+    public BetaDto() { }
+
+    public BetaDto(int id, String name, String method, Boolean uniqueBool)
     {
-        this.id = id;
-        this.name = name;
-        this.method = method;
+        super(id, name, method);
+        this.uniqueBool = uniqueBool;
     }
+
+    public Boolean getUniqueBool() { return uniqueBool; }
+    public void setUniqueBool() { this.uniqueBool = uniqueBool; }
 }
