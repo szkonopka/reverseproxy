@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.lang.*;
 
 @SpringBootApplication
-public class RestController {
+public class RestApp {
     public static void main(String[] args) {
-        SpringApplication.run(RestController.class, args);
+        SpringApplication.run(RestApp.class, args);
     }
 }
