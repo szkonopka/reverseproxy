@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 
 @ControllerAdvice
 class ApiExceptionHandler {
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler()
     public void handleError() {
-        throw new IllegalArgumentException("ee");
+        System.out.println("Test");
     }
 }
