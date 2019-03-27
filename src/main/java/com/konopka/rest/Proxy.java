@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
+
+import com.konopka.dtos.AlphaDto;
 
 @RestController
 @RequestMapping(value = "/system")
@@ -37,19 +40,14 @@ public class Proxy {
     private String putUrl;
 
     @RequestMapping(value = "", method=RequestMethod.GET)
-    public Map<String, String> alpha()
+    public ResponseEntity<AlphaDto> alpha()
     {
-        /*
-        response = restRedirect.exchange(
+        AlphaDto alphaDto = restRedirect.getForObject(
             protocolPrefix + getUrl + "/" + entityName, 
-            HttpMethod.GET, 
-            null,
-            new ParameterizedTypeReference<Map<String, String>>(){});
-        return response.getBody();
-        */
+            AlphaDto.class
+            );
 
-        List<Map<String, String>>rest = restRedirect.getForObject(protocolPrefix + getUrl + "/" + entityName, List.class);
-        return rest.get(0);
+        return new ResponseEntity<AlphaDto>(alphaDto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method=RequestMethod.POST)

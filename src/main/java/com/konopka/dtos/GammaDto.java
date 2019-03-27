@@ -1,6 +1,8 @@
 package com.konopka.dtos;
 
-public class GammaDto {
+import java.io.Serializable;
+
+public class GammaDto implements Serializable {
     private int id;
     private String name;
     private String methodType;
