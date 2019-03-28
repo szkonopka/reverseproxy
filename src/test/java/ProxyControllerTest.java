@@ -27,58 +27,66 @@ import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import org.springframework.http.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-@WebAppConfiguration
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ProxyController.class)
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, classes = RestApp.class)
+@TestPropertySource("classpath:application.properties")
 public class ProxyControllerTest {
-    //@Autowired
     private TestRestTemplate template = new TestRestTemplate();
+    private ProxyController proxy = new ProxyController();
 
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8080);
+    public WireMockRule alphaWireMockRule = new WireMockRule(1000);
+
+    @Rule
+    public WireMockRule betaWireMockRule = new WireMockRule(2000);
+
+    @Rule
+    public WireMockRule gammaWireMockRule = new WireMockRule(3000);
     
     @Test
     public void getOnAlpha_FetchDataFromExternalService_ShouldReturnAlphaDto()
     {
-        //WireMockRule wireMockRule = new WireMockRule(1000);
-        stubFor(get(urlEqualTo("localhost:1000/objects/0"))
+        alphaWireMockRule.stubFor(get(urlEqualTo("/objects/0"))
             .willReturn(aResponse()
                 .withStatus(HttpStatus.OK.value())
-                .withHeader("Content-Type", "text/json")
+                .withHeader("Content-Type", "application/json")
                 .withBody("{ \"id\": 0, \"name\": \"alpha\", \"method\": \"get\" }")));
 
-        ResponseEntity<AlphaDto> response = this.template.exchange("/system", HttpMethod.GET, null, AlphaDto.class);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        ResponseEntity<AlphaDto> alphaDto = proxy.alpha();
+        
+        ResponseEntity<AlphaDto> response = this.template.exchange("http://localhost:8080", HttpMethod.GET, null, AlphaDto.class);
+        
+        //assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test
     public void getOnBeta_FetchDataFromExternalService_ShouldReturnBetaDto()
     {
-        //WireMockRule wireMockRule = new WireMockRule(2000);
-        stubFor(post(urlEqualTo("/objects/0"))
+        betaWireMockRule.stubFor(post(urlEqualTo("/objects/0"))
             .willReturn(aResponse()
                 .withStatus(HttpStatus.OK.value())
                 .withHeader("Content-Type", "application/json")
                 .withBody("{ \"id\": 0, \"name\": \"beta\", \"method\": \"post\" }")));
 
-        ResponseEntity<BetaDto> response = this.template.exchange("http://localhost:8080/system", HttpMethod.POST, null, BetaDto.class);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertTrue(true);
+        ResponseEntity<BetaDto> response = this.template.exchange("http://localhost:8080", HttpMethod.POST, null, BetaDto.class);
+        
+        //assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
     
     @Test
     public void getOnGamma_FetchDataFromExternalService_ShouldReturnGammaDto()
     {
-        //WireMockRule wireMockRule = new WireMockRule(3000);
-        stubFor(put(urlEqualTo("/objects/0"))
+        gammaWireMockRule.stubFor(put(urlEqualTo("/objects/0"))
             .willReturn(aResponse()
                 .withStatus(HttpStatus.OK.value())
                 .withHeader("Content-Type", "application/json")
                 .withBody("{ \"id\": 0, \"name\": \"gamma\", \"method\": \"put\" }")));
 
-        ResponseEntity<GammaDto> response = this.template.exchange("http://localhost:8080/system", HttpMethod.PUT, null, GammaDto.class);
-        assertTrue(true);
+        ResponseEntity<GammaDto> response = this.template.exchange("http://localhost:8080", HttpMethod.PUT, null, GammaDto.class);
+        
+        //assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }   
 }

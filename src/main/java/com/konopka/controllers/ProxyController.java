@@ -22,7 +22,7 @@ import com.konopka.dtos.BetaDto;
 import com.konopka.dtos.GammaDto;
 
 @RestController
-@RequestMapping(value = "/system")
+@RequestMapping(value = "")
 public class ProxyController {
     private RestTemplate restRedirect = new RestTemplate();
 
@@ -44,33 +44,30 @@ public class ProxyController {
     @GetMapping(value = "")
     public ResponseEntity<AlphaDto> alpha()
     {
-        AlphaDto alphaDto = restRedirect.getForObject(
-            protocolPrefix + getUrl + "/" + entityName + "/0", 
-            AlphaDto.class
-        );
+        System.out.println(getUrl);
+        System.out.println(getUrl);
+        System.out.println(getUrl);
+        System.out.println(getUrl);
+        System.out.println(getUrl);
+        System.out.println(getUrl);
+        ResponseEntity<AlphaDto> alphaDto = restRedirect.exchange("http://localhost:1000/objects/0", HttpMethod.GET, null, AlphaDto.class);
         
-        return new ResponseEntity<AlphaDto>(alphaDto, HttpStatus.OK);
+        return alphaDto;
     }
 
     @PostMapping(value = "")
      public ResponseEntity<BetaDto> beta()
     {
-        BetaDto betaDto = restRedirect.getForObject(
-            protocolPrefix + postUrl + "/" + entityName + "/0", 
-            BetaDto.class
-        );
+        ResponseEntity<BetaDto> betaDto = restRedirect.exchange("http://localhost:1000/objects/0", HttpMethod.POST, null, BetaDto.class);
 
-        return new ResponseEntity<BetaDto>(betaDto, HttpStatus.OK);
+        return betaDto;
     }
 
     @PutMapping(value = "")
     public ResponseEntity<GammaDto> gamma()
     {
-        GammaDto gammaDto = restRedirect.getForObject(
-            protocolPrefix + putUrl + "/" + entityName + "/0", 
-            GammaDto.class
-        );
+        ResponseEntity<GammaDto> gammaDto = restRedirect.exchange("http://localhost:1000/objects/0", HttpMethod.PUT, null, GammaDto.class);
         
-        return new ResponseEntity<GammaDto>(gammaDto, HttpStatus.OK);
+        return gammaDto;
     }
 }
