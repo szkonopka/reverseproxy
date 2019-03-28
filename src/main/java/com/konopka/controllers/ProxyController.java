@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Configuration;
 
 import com.konopka.dtos.AlphaDto;
 import com.konopka.dtos.BetaDto;
 import com.konopka.dtos.GammaDto;
 
+@PropertySource("classpath:application.properties")
+@Configuration
 @RestController
 @RequestMapping(value = "")
 public class ProxyController {
@@ -58,7 +62,7 @@ public class ProxyController {
     @PostMapping(value = "")
      public ResponseEntity<BetaDto> beta()
     {
-        ResponseEntity<BetaDto> betaDto = restRedirect.exchange("http://localhost:1000/objects/0", HttpMethod.POST, null, BetaDto.class);
+        ResponseEntity<BetaDto> betaDto = restRedirect.exchange("http://localhost:2000/objects/0", HttpMethod.POST, null, BetaDto.class);
 
         return betaDto;
     }
@@ -66,7 +70,7 @@ public class ProxyController {
     @PutMapping(value = "")
     public ResponseEntity<GammaDto> gamma()
     {
-        ResponseEntity<GammaDto> gammaDto = restRedirect.exchange("http://localhost:1000/objects/0", HttpMethod.PUT, null, GammaDto.class);
+        ResponseEntity<GammaDto> gammaDto = restRedirect.exchange("http://localhost:3000/objects/0", HttpMethod.PUT, null, GammaDto.class);
         
         return gammaDto;
     }

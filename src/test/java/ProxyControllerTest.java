@@ -57,9 +57,9 @@ public class ProxyControllerTest {
 
         ResponseEntity<AlphaDto> alphaDto = proxy.alpha();
         
-        ResponseEntity<AlphaDto> response = this.template.exchange("http://localhost:8080", HttpMethod.GET, null, AlphaDto.class);
-        
-        //assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        ResponseEntity<AlphaDto> response = this.template.exchange("http://localhost:8000", HttpMethod.GET, null, AlphaDto.class);
+        System.out.println(response.getBody());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test
@@ -71,9 +71,9 @@ public class ProxyControllerTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody("{ \"id\": 0, \"name\": \"beta\", \"method\": \"post\" }")));
 
-        ResponseEntity<BetaDto> response = this.template.exchange("http://localhost:8080", HttpMethod.POST, null, BetaDto.class);
+        ResponseEntity<BetaDto> response = this.template.exchange("http://localhost:8000", HttpMethod.POST, null, BetaDto.class);
         
-        //assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
     
     @Test
@@ -85,8 +85,9 @@ public class ProxyControllerTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody("{ \"id\": 0, \"name\": \"gamma\", \"method\": \"put\" }")));
 
-        ResponseEntity<GammaDto> response = this.template.exchange("http://localhost:8080", HttpMethod.PUT, null, GammaDto.class);
+        ResponseEntity<GammaDto> response = this.template.exchange("http://localhost:8000", HttpMethod.PUT, null, GammaDto.class);
         
-        //assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        System.out.println(response.getBody());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }   
 }
